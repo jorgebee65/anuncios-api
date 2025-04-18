@@ -1,0 +1,22 @@
+services:
+  db:
+    container_name: spring-data-jpa-postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: amigoscode
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: amigos
+    ports:
+      - "5334:5432"
+    restart: unless-stopped
+    volumes:
+      - db:/data/postgres
+    networks:
+      - amigos
+
+networks:
+  amigos:
+    driver: bridge
+
+volumes:
+  db:
