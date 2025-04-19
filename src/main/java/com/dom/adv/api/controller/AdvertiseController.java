@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/advertises")
 public class AdvertiseController {
@@ -80,7 +81,7 @@ public class AdvertiseController {
     @PutMapping(value = "/{id}/with-image", consumes = "multipart/form-data")
     public ResponseEntity<?> updateAdvertiseWithImage(
             @PathVariable Long id,
-            @RequestPart("file") MultipartFile file,
+            @RequestPart(name = "file", required = false) MultipartFile file ,
             @RequestPart("data") String advertiseJson
     ) {
         try {

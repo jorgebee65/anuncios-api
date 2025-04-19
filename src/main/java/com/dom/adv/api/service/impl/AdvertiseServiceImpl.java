@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -77,9 +78,10 @@ public class AdvertiseServiceImpl implements AdvertiseService {
         if (adExist.isEmpty()) {
             throw new ResourceNotFoundException("Advertise", dto.getId());
         }
-        String imageUrl = s3UploadService.uploadImage(file);
-        dto.setImage(imageUrl);
-
+        if(Objects.nonNull(file)) {
+            String imageUrl = s3UploadService.uploadImage(file);
+            dto.setImage(imageUrl);
+        }
         Advertise entity = mapper.toEntity(dto);
         return persist(entity);
     }
