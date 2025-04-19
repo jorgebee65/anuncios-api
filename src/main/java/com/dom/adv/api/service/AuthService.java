@@ -48,7 +48,6 @@ public class AuthService {
 
         userRepository.save(user);
 
-        // Crear el UserDetails a partir del usuario recién registrado
         UserDetails userDetails = new CustomUserDetails(user);
 
         return jwtService.generateToken(userDetails);
