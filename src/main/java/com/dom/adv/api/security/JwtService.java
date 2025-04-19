@@ -25,8 +25,10 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("firstName", customUserDetails.getFirstName())
                 .claim("roles", userDetails.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))

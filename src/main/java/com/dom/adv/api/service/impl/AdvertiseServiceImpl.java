@@ -19,29 +19,37 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class AdvertiseServiceImpl implements AdvertiseService {
-    private final AdvertiseRepository repository;
+    private final AdvertiseRepository advertiseRepository;
     private final AdvertiseMapper mapper;
     private final S3UploadService s3UploadService;
 
     public AdvertiseServiceImpl(AdvertiseRepository repository, AdvertiseMapper mapper, S3UploadService s3UploadService) {
-        this.repository = repository;
+        this.advertiseRepository = repository;
         this.mapper = mapper;
         this.s3UploadService = s3UploadService;
     }
 
-    public Page<AdvertiseSummaryDTO> findAll(Pageable pageable, Boolean active) {
-        return Optional.ofNullable(active)
-                .map(a -> repository.findAllByActive(a, pageable))
-                .orElseGet(() -> repository.findAll(pageable))
-                .map(mapper::toSummaryDTO);
+    public Page<AdvertiseSummaryDTO> findAll(Pageable pageable, Boolean active, String category) {
+        Page<Advertise> result;
+
+        if (active != null && category != null) {
+            result = advertiseRepository.findAllByActiveAndCategoryDescriptionIgnoreCase(active, category, pageable);
+        } else if (active != null) {
+            result = advertiseRepository.findAllByActive(active, pageable);
+        } else if (category != null) {
+            result = advertiseRepository.findAllByCategoryDescriptionIgnoreCase(category, pageable);
+        } else {
+            result = advertiseRepository.findAll(pageable);
+        }
+
+        return result.map(mapper::toSummaryDTO);
     }
 
     public AdvertiseDetailDTO findById(Long id) {
-        return repository.findById(id)
+        return advertiseRepository.findById(id)
                 .map(mapper::toDetailDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Advertise", id));
     }
@@ -55,10 +63,10 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Override
     public void deleteById(Long id) {
-        if (!repository.existsById(id)) {
+        if (!advertiseRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Anuncio no encontrado");
         }
-        repository.deleteById(id);
+        advertiseRepository.deleteById(id);
     }
 
     @Override
@@ -74,7 +82,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Override
     public AdvertiseDetailDTO updateWithImage(AdvertiseDetailDTO dto, MultipartFile file) throws IOException {
-        var adExist = repository.findById(dto.getId());
+        var adExist = advertiseRepository.findById(dto.getId());
         if (adExist.isEmpty()) {
             throw new ResourceNotFoundException("Advertise", dto.getId());
         }
@@ -94,7 +102,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     }
 
     private AdvertiseDetailDTO persist(Advertise entity) {
-        var saved = repository.save(entity);
+        var saved = advertiseRepository.save(entity);
         return mapper.toDetailDTO(saved);
     }
 

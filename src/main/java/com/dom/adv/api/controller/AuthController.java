@@ -21,7 +21,7 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         try {
             String token = authService.register(request);
-            return ResponseEntity.ok("Usuario registrado con éxito. Token: " + token);
+            return ResponseEntity.ok("Usuario registrado con éxito.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al registrar el usuario: " + e.getMessage());
         }

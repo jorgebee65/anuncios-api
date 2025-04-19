@@ -10,5 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface AdvertiseRepository extends JpaRepository<Advertise, Long> {
 
     Page<Advertise> findAllByActive(boolean active, Pageable pageable);
+    Page<Advertise> findAllByActiveAndCategoryDescriptionIgnoreCase(Boolean active, String category, Pageable pageable);
+    Page<Advertise> findAllByCategoryDescriptionIgnoreCase(String category, Pageable pageable);
 
 }
