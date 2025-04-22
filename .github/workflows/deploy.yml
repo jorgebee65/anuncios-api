@@ -33,6 +33,6 @@ jobs:
             docker-compose stop adv-back
             docker-compose rm -f adv-back
             docker-compose pull adv-back
-            docker-compose up -d adv-back
+            docker restart adv-back
             docker image prune -f
           EOF
