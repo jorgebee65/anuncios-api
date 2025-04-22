@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface AdvertiseService {
-    Page<AdvertiseSummaryDTO> findAll(Pageable pageable, Boolean active);
+    Page<AdvertiseSummaryDTO> findAll(Pageable pageable, Boolean active, String category);
     AdvertiseDetailDTO findById(Long id);
     AdvertiseDetailDTO save(RequestAdvertise requestAdvertise);
     void deleteById(Long id);

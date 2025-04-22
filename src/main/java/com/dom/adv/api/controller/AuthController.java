@@ -5,6 +5,9 @@ import com.dom.adv.api.dto.LoginRequest;
 import com.dom.adv.api.dto.RegisterRequest;
 import com.dom.adv.api.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +24,7 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         try {
             String token = authService.register(request);
-            return ResponseEntity.ok("Usuario registrado con éxito. Token: " + token);
+            return ResponseEntity.ok("Usuario registrado con éxito.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al registrar el usuario: " + e.getMessage());
         }
@@ -37,4 +40,11 @@ public class AuthController {
             return ResponseEntity.status(401).body(new AuthResponse("Credenciales incorrectas"));
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public ResponseEntity<UserDetails> authenticateMe(@AuthenticationPrincipal UserDetails user) {
+        return ResponseEntity.ok(user);
+    }
+
 }

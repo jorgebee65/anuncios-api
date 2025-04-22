@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -40,8 +41,12 @@ public class AuthService {
     public String register(RegisterRequest request) {
         Role roleUser = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("Role USER not found"));
-
+        userRepository.findByUsername(request.getUsername())
+                .ifPresent(user -> {
+                    throw new RuntimeException("El usuario ya existe");
+                });
         User user = new User();
+        user.setFirstName(request.getFirstName());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Set.of(roleUser));

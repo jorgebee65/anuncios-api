@@ -34,7 +34,8 @@ public class AdvertiseController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "creation,desc") String[] sort,
-            @RequestParam(required = false) Boolean active
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) String category
     ) {
         Sort sorting = Sort.by(Sort.Order.desc("creation"));
         if (sort.length == 2) {
@@ -42,7 +43,7 @@ public class AdvertiseController {
         }
 
         Pageable pageable = PageRequest.of(page, size, sorting);
-        Page<AdvertiseSummaryDTO> advertises = advertiseService.findAll(pageable, active);
+        Page<AdvertiseSummaryDTO> advertises = advertiseService.findAll(pageable, active, category);
         return ResponseEntity.ok(advertises);
     }
 

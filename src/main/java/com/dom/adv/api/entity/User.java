@@ -21,6 +21,9 @@ public class User {
     private String password;
 
     @Column
+    private String firstName;
+
+    @Column
     private boolean enabled = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -69,5 +72,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }
