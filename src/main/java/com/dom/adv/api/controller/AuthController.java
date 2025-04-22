@@ -5,6 +5,9 @@ import com.dom.adv.api.dto.LoginRequest;
 import com.dom.adv.api.dto.RegisterRequest;
 import com.dom.adv.api.service.AuthService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,4 +40,11 @@ public class AuthController {
             return ResponseEntity.status(401).body(new AuthResponse("Credenciales incorrectas"));
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public ResponseEntity<UserDetails> authenticateMe(@AuthenticationPrincipal UserDetails user) {
+        return ResponseEntity.ok(user);
+    }
+
 }

@@ -23,7 +23,7 @@ public class DataInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("{adv.admin.password}")
+    @Value("${adv.admin.password}")
     private String rawPassword;
 
     public DataInitializer(
