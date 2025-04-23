@@ -3,7 +3,7 @@ package com.dom.adv.api.controller;
 import com.dom.adv.api.dto.AdvertiseDetailDTO;
 import com.dom.adv.api.dto.AdvertiseSummaryDTO;
 import com.dom.adv.api.request.RequestAdvertise;
-import com.dom.adv.api.service.AdvertiseService;
+import com.dom.adv.api.service.advertise.UserAdvertService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -21,11 +21,11 @@ import java.io.IOException;
 @RequestMapping("/api/v1/advertises")
 public class AdvertiseController {
 
-    private final AdvertiseService advertiseService;
+    private final UserAdvertService userAdvertService;
     private final ObjectMapper objectMapper;
 
-    public AdvertiseController(AdvertiseService service, ObjectMapper objectMapper) {
-        this.advertiseService = service;
+    public AdvertiseController(UserAdvertService service, ObjectMapper objectMapper) {
+        this.userAdvertService = service;
         this.objectMapper = objectMapper;
     }
 
@@ -43,25 +43,25 @@ public class AdvertiseController {
         }
 
         Pageable pageable = PageRequest.of(page, size, sorting);
-        Page<AdvertiseSummaryDTO> advertises = advertiseService.findAll(pageable, active, category);
+        Page<AdvertiseSummaryDTO> advertises = userAdvertService.findAll(pageable, active, category);
         return ResponseEntity.ok(advertises);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AdvertiseDetailDTO> getAdvertiseById(@PathVariable Long id) {
-        AdvertiseDetailDTO advertise = advertiseService.findById(id);
+        AdvertiseDetailDTO advertise = userAdvertService.findById(id);
         return ResponseEntity.ok(advertise);
     }
 
     @PostMapping
     public ResponseEntity<AdvertiseDetailDTO> createAdvertise(@Valid @RequestBody RequestAdvertise request) {
-        AdvertiseDetailDTO saved = advertiseService.save(request);
+        AdvertiseDetailDTO saved = userAdvertService.save(request);
         return ResponseEntity.ok(saved);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdvertise(@PathVariable Long id) {
-        advertiseService.deleteById(id);
+        userAdvertService.deleteById(id);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
@@ -72,7 +72,7 @@ public class AdvertiseController {
     ) {
         try {
             AdvertiseDetailDTO dto = objectMapper.readValue(advertiseJson, AdvertiseDetailDTO.class);
-            AdvertiseDetailDTO created = advertiseService.createWithImage(dto, file);
+            AdvertiseDetailDTO created = userAdvertService.createWithImage(dto, file);
             return ResponseEntity.ok(created);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Error al procesar la solicitud: " + e.getMessage());
@@ -87,8 +87,8 @@ public class AdvertiseController {
     ) {
         try {
             AdvertiseDetailDTO dto = objectMapper.readValue(advertiseJson, AdvertiseDetailDTO.class);
-            dto.setId(id); // asegurar el ID desde el path
-            AdvertiseDetailDTO updated = advertiseService.updateWithImage(dto, file);
+            dto.setId(id);
+            AdvertiseDetailDTO updated = userAdvertService.updateWithImage(dto, file);
             return ResponseEntity.ok(updated);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Error al procesar la solicitud: " + e.getMessage());

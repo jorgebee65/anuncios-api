@@ -1,7 +1,7 @@
 package com.dom.adv.api.controller;
 
 import com.dom.adv.api.dto.CategoryDTO;
-import com.dom.adv.api.service.CategoryService;
+import com.dom.adv.api.service.category.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

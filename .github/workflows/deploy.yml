@@ -30,9 +30,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ${{ secrets.EC2_PATH }}
-            docker-compose stop adv-back
-            docker-compose rm -f adv-back
-            docker-compose pull adv-back
-            docker restart adv-back
+            docker-compose stop
+            docker-compose pull
+            docker-compose start
             docker image prune -f
           EOF
