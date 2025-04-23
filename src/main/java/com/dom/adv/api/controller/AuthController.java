@@ -3,7 +3,8 @@ package com.dom.adv.api.controller;
 import com.dom.adv.api.dto.AuthResponse;
 import com.dom.adv.api.dto.LoginRequest;
 import com.dom.adv.api.dto.RegisterRequest;
-import com.dom.adv.api.service.AuthService;
+import com.dom.adv.api.security.CustomUserDetails;
+import com.dom.adv.api.service.auth.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +42,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDetails> authenticateMe(@AuthenticationPrincipal UserDetails user) {
+    public ResponseEntity<UserDetails> authenticateMe(@AuthenticationPrincipal CustomUserDetails user) {
         return ResponseEntity.ok(user);
     }
 

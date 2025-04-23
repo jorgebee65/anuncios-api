@@ -1,4 +1,4 @@
-package com.dom.adv.api.service;
+package com.dom.adv.api.service.auth;
 
 import com.dom.adv.api.dto.LoginRequest;
 import com.dom.adv.api.dto.RegisterRequest;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service

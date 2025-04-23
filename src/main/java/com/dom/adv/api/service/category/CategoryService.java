@@ -1,4 +1,4 @@
-package com.dom.adv.api.service;
+package com.dom.adv.api.service.category;
 
 import com.dom.adv.api.dto.CategoryDTO;
 

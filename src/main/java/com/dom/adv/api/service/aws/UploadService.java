@@ -1,4 +1,4 @@
-package com.dom.adv.api.service;
+package com.dom.adv.api.service.aws;
 
 import org.springframework.web.multipart.MultipartFile;
 

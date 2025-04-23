@@ -1,17 +1,12 @@
-package com.dom.adv.api.service;
+package com.dom.adv.api.service.advertise;
 
 import com.dom.adv.api.dto.AdvertiseDetailDTO;
-import com.dom.adv.api.dto.AdvertiseSummaryDTO;
 import com.dom.adv.api.request.RequestAdvertise;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface AdvertiseService {
-    Page<AdvertiseSummaryDTO> findAll(Pageable pageable, Boolean active, String category);
-    AdvertiseDetailDTO findById(Long id);
+public interface UserAdvertService extends PublicAdvertService {
     AdvertiseDetailDTO save(RequestAdvertise requestAdvertise);
     void deleteById(Long id);
     AdvertiseDetailDTO createWithImage(AdvertiseDetailDTO dto, MultipartFile file) throws IOException;

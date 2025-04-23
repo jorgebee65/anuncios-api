@@ -1,6 +1,6 @@
 package com.dom.adv.api.controller;
 
-import com.dom.adv.api.service.UploadService;
+import com.dom.adv.api.service.aws.UploadService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
